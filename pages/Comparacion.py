@@ -71,14 +71,18 @@ expected_charts = [
 
 if st.button("Generar Gráficos del Experimento Principal"):
     if not os.path.exists(RESULTS_FOLDER) or not os.listdir(RESULTS_FOLDER):
-        st.error("Error: La carpeta 'SQHN/results' está vacía. Debes colocar los archivos .data aquí.")
+        st.error("Error: La carpeta 'SQHN/results' está vacía.")
     else:
         with st.spinner("Generando los tres gráficos..."):
             try:
-                subprocess.run(
-                    ["python", MAIN_SCRIPT_PATH, "--plot", "OnCont-L1"],
-                    capture_output=True, text=True, check=True
+                process = subprocess.run(
+                    ["python", "main.py", "--plot", "OnCont-L1"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    cwd=SQHN_DIR 
                 )
+
                 st.success("¡Proceso de generación de gráficos completado!")
                 time.sleep(1)
 
@@ -97,9 +101,11 @@ if st.button("Generar Gráficos del Experimento Principal"):
                     else:
                         st.warning(f"No se encontró el archivo del gráfico: {chart['file']}")
 
+            except subprocess.CalledProcessError as e:
+                st.error("Error al ejecutar el script de ploteo.")
+                st.expander("Ver detalles del error").code(e.stderr, language='bash')
             except Exception as e:
-                st.error("Error al generar los gráficos.")
-                st.expander("Ver detalles").code(str(e))
+                st.error(f"Ocurrió un error inesperado: {e}")
 
 st.markdown("---")
 
