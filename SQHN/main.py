@@ -50,8 +50,8 @@ def main():
 
     # Select and Generate Plots
     if args.plot == 'OnCont-L1':
-        plot.plot_sensit()
         plot.plot_cont()
+        plot.plot_sensit()
         plot.plot_cont_cumul()
     elif args.plot == 'OnCont-L3':
         plot.plot_sensit_tree()
