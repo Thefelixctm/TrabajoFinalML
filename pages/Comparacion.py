@@ -4,6 +4,7 @@ import os
 from PIL import Image
 import subprocess
 import time
+import sys 
 
 # --- Configuración de la página ---
 st.set_page_config(
