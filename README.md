@@ -21,19 +21,6 @@ Este repositorio contiene una versión extendida del proyecto **“A Sparse Quan
 - PyTorch 1.10.0  
 - OpenCV, NumPy, Matplotlib, Streamlit
 
-Instalación recomendada:
-
-```bash
-pip install -r requirements.txt
-```
-
->  Si no tienes `requirements.txt`, puedes instalar manualmente:
-
-```bash
-pip install torch==1.10.0 opencv-python numpy matplotlib streamlit
-```
-
----
 
 ##  Datasets
 
