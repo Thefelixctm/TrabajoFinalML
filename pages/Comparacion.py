@@ -64,8 +64,8 @@ st.markdown("""
 
 # Lista de los gráficos del experimento principal
 expected_charts = [
-    {"file": "OnCont_L1_Continual.png", "title": "Rendimiento Continual (Métrica L1)", "description": "Muestra la evolución del rendimiento en un escenario de aprendizaje continuo."},
     {"file": "OnCont_L1_Final_Performance.png", "title": "Rendimiento Final Global (Métrica L1)", "description": "Resume el rendimiento final de cada modelo una vez completados los procesos."},
+    {"file": "OnCont_L1_Continual.png", "title": "Rendimiento Continual (Métrica L1)", "description": "Muestra la evolución del rendimiento en un escenario de aprendizaje continuo."},
     {"file": "OnCont_L1_Sensitivity.png", "title": "Análisis de Sensibilidad (Métrica L1)", "description": "Explora cómo el rendimiento varía frente a cambios en parámetros clave."}
 ]
 
