@@ -39,7 +39,7 @@ if os.path.exists(graficos_folder) and os.path.isdir(graficos_folder):
         chart_path = os.path.join(graficos_folder, chart_info["file"])
         if os.path.exists(chart_path):
             st.subheader(chart_info["title"])
-            st.image(chart_path, caption=chart_info["description"], use_column_width=True)
+            st.image(chart_path, caption=chart_info["description"], use_container_width=True)
             st.markdown("---") # Un separador visual para cada gráfico
         else:
             st.warning(f"No se encontró el gráfico: **{chart_info['file']}** en la ruta esperada.")
