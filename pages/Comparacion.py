@@ -25,6 +25,29 @@ ASSETS_FOLDER = os.path.join(SQHN_DIR, "assets")
 # Asegurarse de que la carpeta de salida para los gráficos exista
 os.makedirs(PLOTS_OUTPUT_FOLDER, exist_ok=True)
 
+# --- HERRAMIENTA DE DEPURACIÓN DE ARCHIVOS ---
+with st.expander("🔍 Haz clic aquí para ver la estructura de archivos del servidor"):
+    st.write("Directorio Raíz del Proyecto:")
+    # Muestra el contenido del directorio raíz
+    try:
+        root_content = os.listdir(os.path.dirname(os.path.abspath(__file__)))
+        st.code('\n'.join(root_content))
+    except Exception as e:
+        st.error(f"No se pudo leer el directorio raíz: {e}")
+        
+    st.write("Contenido de la carpeta SQHN/results/:")
+    # Muestra el contenido de la carpeta de resultados
+    results_path_debug = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'SQHN', 'results')
+    try:
+        results_content = os.listdir(results_path_debug)
+        if results_content:
+            st.code('\n'.join(results_content))
+        else:
+            st.warning("¡La carpeta 'results' está vacía!")
+    except FileNotFoundError:
+        st.error("¡ERROR CRÍTICO! La carpeta 'SQHN/results' no existe en el servidor.")
+    except Exception as e:
+        st.error(f"No se pudo leer la carpeta 'results': {e}")
 
 # --- Contenido de la Página ---
 st.title("📊 Panel de Visualización de Resultados")
