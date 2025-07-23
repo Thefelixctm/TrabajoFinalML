@@ -55,10 +55,6 @@ class MemUnit(nn.Module):
                 wts.weight *= 0.0
             return wts
     
-    # --- No se necesitan más cambios en el resto de los métodos ---
-    # PyTorch se encarga de que las operaciones entre tensores que están en el mismo
-    # dispositivo (sea CPU o GPU) funcionen correctamente.
-    
     def load_wts(self, data):
         with torch.no_grad():
             self.wts.weight *= 0.0
@@ -130,7 +126,7 @@ class MemUnit(nn.Module):
             self.age += 1
 
     def update_prior(self, mxlk, mxC):
-        self.prior[mxC] = self.prior[mxC] + (mxlk - self.prior[mxC]) / (self.counts[mxC] + 1)c
+        self.prior[mxC] = self.prior[mxC] + (mxlk - self.prior[mxC]) / (self.counts[mxC] + 1)
 
 
     def infer_step(self, input):
