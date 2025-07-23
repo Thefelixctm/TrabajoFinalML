@@ -1,48 +1,90 @@
-# pages/comparacion.py
+# pages/comparacion.py 
 import streamlit as st
 import os
 from PIL import Image
+import subprocess
+import time
+import numpy as np
+import matplotlib.pyplot as plt
 
-# --- Configuración específica de la página (opcional, pero buena práctica) ---
-# Si bien st.set_page_config es global, a veces es útil para títulos de página
-# que aparecen en la barra lateral en aplicaciones multipágina.
+# --- Configuración específica de la página ---
 st.set_page_config(
-    page_title="Gráficos de Comparación", # Título para esta página específica en la barra lateral
+    page_title="Gráficos de Comparación",
     page_icon="📊",
 )
 
 # --- Contenido de la página de Gráficos de Comparación ---
-st.title("📊 Gráficos de Comparación de Rendimiento")
+st.title("📊 Generar y Ver Gráficos de Rendimiento")
 st.markdown("""
-En esta sección, se presentan los resultados cuantitativos de nuestros experimentos,
-comparando el rendimiento de los diferentes modelos en tareas de reconstrucción de imágenes.
-""")
+    Haz clic en el botón de abajo para ejecutar el script de generación de gráficos.
+    Este proceso creará los archivos de imagen de los gráficos en una carpeta temporal local
+    (`SQHN/plots/`) y luego los mostrará directamente aquí.
+    """)
 
-# --- RUTA A LA CARPETA DE GRÁFICOS ---
-# NOTA IMPORTANTE: La ruta 'Graficos/' es relativa al directorio **raíz**
-# desde donde ejecutas 'streamlit run inicio.py'.
-# Asegúrate de que la carpeta 'Graficos/' esté en el mismo nivel que tu 'inicio.py'.
-graficos_folder = "Graficos/"
+# --- Configuración de rutas (VERIFICA ESTAS RUTAS) ---
+# La ruta a tu script main.py (asumiendo que está en una subcarpeta 'SQHN')
+main_script_path = "SQHN/main.py"
+# La carpeta donde main.py guardará los gráficos generados (relativa al directorio raíz de tu app.py/inicio.py)
+plots_output_folder = "SQHN/plots"
 
-# --- LISTA DE TUS GRÁFICOS Y SUS TÍTULOS/DESCRIPCIONES ---
-# Puedes ajustar los títulos y descripciones según lo que represente cada gráfico
-charts_to_display = [
-    {"file": "OnCont_L1_Continual.png", "title": "Rendimiento Continual (Métrica L1)", "description": "Este gráfico muestra la evolución del rendimiento de los modelos en un escenario de aprendizaje continuo, utilizando la métrica L1. Permite observar cómo se adaptan a la información nueva y cómo retienen la aprendida."},
-    {"file": "OnCont_L1_Cumulative.png", "title": "Rendimiento Acumulativo (Métrica L1)", "description": "Aquí se visualiza el rendimiento acumulativo de los modelos a lo largo de las fases de entrenamiento o evaluación, basado en la métrica L1. Esto indica la capacidad general de los modelos a medida que procesan más datos."},
-    {"file": "OnCont_L1_Final_Performance.png", "title": "Rendimiento Final Global (Métrica L1)", "description": "Este gráfico resume el rendimiento final de cada modelo una vez completados todos los procesos de entrenamiento y evaluación principales, usando la métrica L1. Ofrece una comparación directa de su efectividad general."},
-    {"file": "OnCont_L1_Sensitivity.png", "title": "Análisis de Sensibilidad (Métrica L1)", "description": "Explora cómo el rendimiento de los modelos, medido por L1, varía frente a cambios en parámetros clave o condiciones de entrada. Ayuda a comprender la robustez y las limitaciones de cada enfoque."}
+# Asegúrate de que la carpeta de salida de los gráficos exista
+os.makedirs(plots_output_folder, exist_ok=True)
+
+
+# --- Lista de los gráficos esperados ---
+expected_charts = [
+    {"file": "OnCont_L1_Continual.png", "title": "Rendimiento Continual (Métrica L1)", "description": "Muestra la evolución del rendimiento en un escenario de aprendizaje continuo."},
+    {"file": "OnCont_L1_Cumulative.png", "title": "Rendimiento Acumulativo (Métrica L1)", "description": "Visualiza el rendimiento acumulativo de los modelos a lo largo de las fases."},
+    {"file": "OnCont_L1_Final_Performance.png", "title": "Rendimiento Final Global (Métrica L1)", "description": "Resume el rendimiento final de cada modelo una vez completados los procesos."},
+    {"file": "OnCont_L1_Sensitivity.png", "title": "Análisis de Sensibilidad (Métrica L1)", "description": "Explora cómo el rendimiento varía frente a cambios en parámetros clave."}
 ]
 
-# --- Cargar y mostrar los gráficos ---
-if os.path.exists(graficos_folder) and os.path.isdir(graficos_folder):
-    for chart_info in charts_to_display:
-        chart_path = os.path.join(graficos_folder, chart_info["file"])
-        if os.path.exists(chart_path):
-            st.subheader(chart_info["title"])
-            st.image(chart_path, caption=chart_info["description"], use_container_width=True)
-            st.markdown("---") # Un separador visual para cada gráfico
-        else:
-            st.warning(f"No se encontró el gráfico: **{chart_info['file']}** en la ruta esperada.")
-            st.markdown(f"Por favor, verifica que el archivo `{chart_info['file']}` esté dentro de la carpeta `{graficos_folder}` y que la carpeta `{graficos_folder}` esté en el mismo directorio que tu `inicio.py`.")
+
+if st.button("Generar y Mostrar Gráficos"):
+    st.info("Generando gráficos... Esto puede tardar un momento.")
+
+    try:
+        # Ejecutar el script main.py para generar los gráficos
+        process = subprocess.run(
+            ["python", main_script_path, "--plot", "OnCont-L1"],
+            capture_output=True,
+            text=True,
+            check=True,
+            # Se ELIMINA el argumento cwd para que el comando se ejecute desde la raíz del proyecto.
+            # Así, 'SQHN/main.py' se resuelve correctamente desde 'Trabajo Final/'.
+        )
+
+        st.success("¡Gráficos generados exitosamente!")
+        # Puedes descomentar estas líneas para ver la salida/errores del script main.py si hay problemas:
+        # if process.stdout:
+        #     st.expander("Ver salida del script (stdout)").code(process.stdout, language='bash')
+        # if process.stderr:
+        #     st.expander("Ver errores del script (stderr)").code(process.stderr, language='bash')
+
+        # Pequeña pausa para asegurar que los archivos se hayan escrito completamente en el disco
+        time.sleep(1)
+
+        # Mostrar los gráficos generados
+        for chart_info in expected_charts:
+            chart_path = os.path.join(plots_output_folder, chart_info["file"])
+            if os.path.exists(chart_path):
+                st.subheader(chart_info["title"])
+                st.image(chart_path, caption=chart_info["description"], use_column_width=True)
+                st.markdown("---")
+            else:
+                st.warning(f"El archivo del gráfico no se encontró después de la generación: **{chart_info['file']}**")
+                st.markdown(f"Verifica que el script `{main_script_path}` esté guardando los gráficos en la ruta correcta (`{plots_output_folder}`).")
+
+    except subprocess.CalledProcessError as e:
+        st.error(f"Error al ejecutar el script de generación de gráficos. Código de salida: {e.returncode}")
+        st.code(e.stdout, language='bash')
+        st.code(e.stderr, language='bash')
+        st.warning(f"Asegúrate de que `{main_script_path}` exista, sea ejecutable y que todas sus dependencias estén instaladas.")
+    except FileNotFoundError:
+        st.error(f"El comando 'python' o el script '{main_script_path}' no se encontró.")
+        st.warning("Asegúrate de que Python esté en tu PATH y que la ruta al script `main.py` sea correcta.")
+    except Exception as e:
+        st.error(f"Ocurrió un error inesperado durante la generación o visualización: {e}")
+
 else:
-    st.error(f"La carpeta de gráficos '{graficos_folder}' no se encontró. Asegúrate de que exista y esté en el mismo nivel que tu archivo 'inicio.py'.")
+    st.info("Haz clic en el botón para comenzar la generación de gráficos.")
