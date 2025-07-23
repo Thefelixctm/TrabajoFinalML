@@ -76,12 +76,12 @@ if st.button("Generar Gráficos del Experimento Principal"):
     else:
         with st.spinner("Generando los tres gráficos..."):
             try:
+                command = [sys.executable, "main.py", "--plot", "OnCont-L1"]
+                
                 process = subprocess.run(
-                    ["python", "main.py", "--plot", "OnCont-L1"],
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    cwd=SQHN_DIR 
+                    command,
+                    capture_output=True, text=True, check=True,
+                    cwd=SQHN_DIR
                 )
 
                 st.success("¡Proceso de generación de gráficos completado!")
