@@ -1,12 +1,9 @@
-Código utilizado para el artículo «Una red de Hopfield cuantificada dispersa para memoria continua en línea».
-
-Ejecutado con Python 3.7.6 y PyTorch 1.10.0.
+Código utilizado para el artículo «Una red de Hopfield cuantificada dispersa para memoria continua en línea», ejecutado con Python 3.7.6 y PyTorch 1.10.0.
+Este codigo sufrio varias modificaciones para su correcto funcionamiento, poder guardar entrenamientos y mejoras(Autoencoder y lector de QRs).
 
 Todos los conjuntos de datos, excepto el de TinyImagenet, se descargan automáticamente a través de PyTorch. Para descargar TinyImagenet, consulte https://github.com/tjmoon0104/pytorch-tiny-imagenet?tab=readme-ov-file
 
-Para reproducir datos de una ejecución de entrenamiento/experimento:
 
-main.py --test argument
 
 Para reproducir gráficos de una ejecución de entrenamiento/experimento:
 
