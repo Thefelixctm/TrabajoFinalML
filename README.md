@@ -85,4 +85,5 @@ Puedes ejecutar el proyecto completo directamente desde Google Colab:
 
 Basado en el paper original "A Sparse Quantized Hopfield Network for Online-Continual Memory".  
 Modificado y extendido con nuevas herramientas de compresión, recuperación visual y análisis interactivo.
+
 Github: https://github.com/nalonso2/SQHN
