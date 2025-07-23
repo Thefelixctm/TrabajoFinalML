@@ -32,7 +32,7 @@ def preprocess_image(image_path, resolution=64):
         
         return transform(image).unsqueeze(0).to('cuda')
     except Exception as e:
-        print(f"❌ Error al cargar la imagen {image_path}: {e}")
+        print(f" Error al cargar la imagen {image_path}: {e}")
         return None
 
 def build_model_library(folder_path, resolution=64, library_file="qr_model_library.pkl"):
@@ -70,11 +70,11 @@ def build_model_library(folder_path, resolution=64, library_file="qr_model_libra
         }
     
     with open(library_file, 'wb') as f: pickle.dump(model_library, f)
-    print(f"\n✅ Biblioteca con {len(model_library)} modelos guardada en '{library_file}'")
+    print(f"\n Biblioteca con {len(model_library)} modelos guardada en '{library_file}'")
 
 def restore_image(corrupted_path, resolution=64, library_file="qr_model_library.pkl"):
     print(f"Intentando restaurar ({resolution}x{resolution}px): {corrupted_path}")
-    if not os.path.exists(library_file): print(f"❌ Error: Biblioteca no encontrada."); return
+    if not os.path.exists(library_file): print(f" Error: Biblioteca no encontrada."); return
 
     with open(library_file, 'rb') as f: model_library = pickle.load(f)
 
@@ -133,7 +133,7 @@ def restore_image(corrupted_path, resolution=64, library_file="qr_model_library.
     os.makedirs(output_dir, exist_ok=True)
     filename = os.path.join(output_dir, f"qr_restoration_{resolution}px_result.png")
     plt.savefig(filename, bbox_inches='tight')
-    print(f"\n✅ Visualización guardada localmente en: {filename}")
+    print(f"\n Visualización guardada localmente en: {filename}")
     plt.show()
 
 if __name__ == '__main__':
