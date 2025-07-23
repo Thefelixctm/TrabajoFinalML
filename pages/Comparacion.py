@@ -97,7 +97,7 @@ if st.button("Generar Gráficos del Experimento Principal"):
                         st.markdown(f"#### {chart['title']}") # <-- Usamos un sub-subtítulo para el título
                         image = Image.open(chart_path)
                         # <-- Usamos el parámetro 'caption' para la descripción
-                        st.image(image, caption=chart["description"], use_column_width=True) 
+                        st.image(image, caption=chart["description"], use_container_width=True) 
                         st.markdown("---")
                     else:
                         st.warning(f"No se encontró el archivo del gráfico: {chart['file']}")
