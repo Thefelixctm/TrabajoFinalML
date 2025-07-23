@@ -4,7 +4,7 @@ import os
 import subprocess
 import time
 from PIL import Image
-import sys 
+import sys
 
 # --- Configuración de la página ---
 st.set_page_config(page_title="Restaurador de QR", page_icon="🛠️", layout="wide")
@@ -23,22 +23,19 @@ os.makedirs(CLEAN_FOLDER, exist_ok=True)
 os.makedirs(CORRUPTED_FOLDER, exist_ok=True)
 os.makedirs(PLOTS_FOLDER, exist_ok=True)
 
-# --- INICIALIZACIÓN DE LA MEMORIA DE LA APP (st.session_state) ---
-# Esto solo se ejecuta una vez al principio de la sesión.
+# --- Inicializar el Estado de la Sesión ---
 if 'step' not in st.session_state:
     st.session_state.step = "1_upload_clean"
 if 'library_trained' not in st.session_state:
     st.session_state.library_trained = False
 
 def restart_process():
-    """Función para reiniciar el flujo de trabajo."""
     st.session_state.step = "1_upload_clean"
     st.session_state.library_trained = False
-    # Opcional: Borrar archivos antiguos para empezar completamente de cero
     if os.path.exists(LIBRARY_FILE):
         os.remove(LIBRARY_FILE)
     st.success("Proceso reiniciado. Puedes empezar desde el Paso 1.")
-    time.sleep(2) # Pausa para que el usuario vea el mensaje
+    time.sleep(2)
 
 # --- Contenido de la Página ---
 st.title("🛠️ Herramienta de Restauración de Códigos QR")
@@ -61,8 +58,8 @@ if st.session_state.step == "1_upload_clean":
             with open(os.path.join(CLEAN_FOLDER, uploaded_file.name), "wb") as f:
                 f.write(uploaded_file.getbuffer())
         st.success(f"{len(uploaded_clean_files)} imágenes limpias cargadas.")
-        st.session_state.step = "2_train" # Avanzamos al siguiente paso
-        st.rerun() # Forzamos el reinicio para mostrar el siguiente paso
+        st.session_state.step = "2_train"
+        st.rerun()
 
 # --- PASO 2: Construir la Biblioteca de Modelos ---
 if st.session_state.step == "2_train":
@@ -72,13 +69,13 @@ if st.session_state.step == "2_train":
     if st.button("Entrenar Modelos", type="primary"):
         with st.spinner(f"Entrenando modelos a {resolution}x{resolution}px... Esto puede tardar varios minutos."):
             if os.path.exists(LIBRARY_FILE): os.remove(LIBRARY_FILE)
-            command = ["python", SCRIPT_PATH, "learn", CLEAN_FOLDER, "--resolution", str(resolution)]
+            command = [sys.executable, SCRIPT_PATH, "learn", CLEAN_FOLDER, "--resolution", str(resolution)]
             process = subprocess.run(command, capture_output=True, text=True)
             
             if process.returncode == 0:
                 st.success("¡Biblioteca de modelos construida exitosamente!")
                 st.session_state.library_trained = True
-                st.session_state.step = "3_restore" # Avanzamos al paso final
+                st.session_state.step = "3_restore"
                 st.rerun()
             else:
                 st.error("Ocurrió un error durante el entrenamiento.")
@@ -101,7 +98,7 @@ if st.session_state.step == "3_restore":
                 f.write(uploaded_corrupted_file.getbuffer())
 
             with st.spinner("Restaurando la imagen..."):
-                command = ["python", SCRIPT_PATH, "restore", corrupted_path, "--resolution", str(resolution)]
+                command = [sys.executable, SCRIPT_PATH, "restore", corrupted_path, "--resolution", str(resolution)]
                 process = subprocess.run(command, capture_output=True, text=True)
 
                 if process.returncode == 0:
@@ -117,6 +114,6 @@ if st.session_state.step == "3_restore":
                     st.error("Ocurrió un error durante la restauración.")
                     st.expander("Ver detalles del error").code(process.stderr)
 
-# Mostrar un mensaje de estado si el proceso ya se completó
+# Mensaje de estado final
 if st.session_state.step == "3_restore" and st.session_state.library_trained:
-    st.success("La biblioteca de modelos ya está entrenada. Puedes subir un archivo corrupto para restaurarlo.")
+    st.info("La biblioteca de modelos ya está entrenada. Puedes subir otro archivo corrupto para restaurarlo.")
