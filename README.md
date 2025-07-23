@@ -1,49 +1,100 @@
-Código utilizado para el artículo «Una red de Hopfield cuantificada dispersa para memoria continua en línea», ejecutado con Python 3.7.6 y PyTorch 1.10.0.
-Este codigo sufrio varias modificaciones para su correcto funcionamiento, poder guardar entrenamientos y mejoras(Autoencoder y lector de QRs).
+#  SQHN: Sparse Quantized Hopfield Network con Autoencoder y Lector de QR
 
-Todos los conjuntos de datos, excepto el de TinyImagenet, se descargan automáticamente a través de PyTorch. Para descargar TinyImagenet, consulte https://github.com/tjmoon0104/pytorch-tiny-imagenet?tab=readme-ov-file
+Este repositorio contiene una versión extendida del proyecto **“A Sparse Quantized Hopfield Network for Online-Continual Memory”**, con nuevas funcionalidades que incluyen un **Autoencoder** para compresión de datos y un **lector/restaurador de códigos QR**. Se incorpora una interfaz visual desarrollada en Streamlit y un entorno práctico en Google Colab.
 
+---
 
+##  Características
 
-Para reproducir gráficos de una ejecución de entrenamiento/experimento:
+-  Implementación base de la Red de Hopfield Cuantificada Dispersa (SQHN)
+-  Evaluación de tareas de memoria continua y codificación con ruido
+-  Añadido módulo de **Autoencoder**
+-  Módulo de **lectura y restauración de códigos QR**
+-  Visualización interactiva con **Streamlit**
+-  Compatible con ejecución en **Google Colab**
 
-main.py --plot argument
+---
 
-Aquí se muestran los argumentos de los distintos experimentos utilizados para reproducir pruebas y gráficos:
+##  Requisitos
 
-Comparaciones de memoria asociativa: assoc_comp
+- Python 3.7.6  
+- PyTorch 1.10.0  
+- OpenCV, NumPy, Matplotlib, Streamlit
 
-Online-Continual prueba una capa oculta: OnCont-L1
-
-Online-Continual prueba tres capas ocultas: OnCont-L3
-
-Codificación con ruido prueba una capa oculta: nsEncode-L1
-
-Codificación con ruido prueba una capa oculta: nsEncode-L3
-
-Codificación con ruido prueba una capa oculta: recog
-
-Comparaciones de arquitectura: arch compare
-
-Por ejemplo, para reproducir los gráficos de la tarea Online-Continual con la capa oculta Modelos de capas, ejecutar
-
-main.py --test OnCont-L1
-
-seguido de
-
-main.py --plot OnCont-L1
-
-
-
-
-Streamlit (Para visualizar resultados y probar el restaurador de QR):
+Instalación recomendada:
 
 ```bash
-https://trabajofinalml-lztvgkzxqmlx5kzxy6kwnx.streamlit.app
+pip install -r requirements.txt
 ```
 
-Codigo realizado en Colab:
+>  Si no tienes `requirements.txt`, puedes instalar manualmente:
 
 ```bash
-https://drive.google.com/file/d/1UFkDAIVonXX4UhlfvHL6ZRHkJTFOrIDL/view?usp=sharing
+pip install torch==1.10.0 opencv-python numpy matplotlib streamlit
 ```
+
+---
+
+##  Datasets
+
+- Todos los datasets (excepto TinyImageNet) se descargan automáticamente con PyTorch.
+- Para usar **TinyImageNet**, debes descargarlo manualmente desde:  
+   https://github.com/tjmoon0104/pytorch-tiny-imagenet
+
+---
+
+##  Ejecución de Experimentos
+
+Para entrenar un modelo o reproducir experimentos desde terminal:
+
+```bash
+python main.py --test <codigo_experimento>
+```
+
+Para visualizar gráficos:
+
+```bash
+python main.py --plot <codigo_experimento>
+```
+
+### Argumentos disponibles
+
+| Descripción del Experimento             | Argumento      |
+|----------------------------------------|----------------|
+| Comparación de memoria asociativa      | assoc_comp     |
+| Memoria continua (1 capa oculta)       | OnCont-L1      |
+| Memoria continua (3 capas ocultas)     | OnCont-L3      |
+| Codificación ruidosa (1 capa)          | nsEncode-L1    |
+| Codificación ruidosa (3 capas)         | nsEncode-L3    |
+| Reconocimiento con ruido               | recog          |
+| Comparación de arquitecturas           | arch compare   |
+
+Ejemplo completo:
+
+```bash
+python main.py --test OnCont-L1
+python main.py --plot OnCont-L1
+```
+
+---
+
+##  Streamlit App (Visualización y QR)
+
+Prueba el sistema de recuperación de memoria y el lector de QR en línea:
+
+ [Abrir aplicación Streamlit](https://trabajofinalml-lztvgkzxqmlx5kzxy6kwnx.streamlit.app)
+
+---
+
+##  Notebook en Google Colab
+
+Puedes ejecutar el proyecto completo directamente desde Google Colab:  
+
+ [Abrir en Colab](https://drive.google.com/file/d/1UFkDAIVonXX4UhlfvHL6ZRHkJTFOrIDL/view?usp=sharing)
+
+---
+
+##  Créditos
+
+Basado en el paper original "A Sparse Quantized Hopfield Network for Online-Continual Memory".  
+Modificado y extendido con nuevas herramientas de compresión, recuperación visual y análisis interactivo.
