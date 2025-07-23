@@ -4,6 +4,7 @@ import os
 import subprocess
 import time
 from PIL import Image
+import sys 
 
 # --- Configuración de la página ---
 st.set_page_config(page_title="Restaurador de QR", page_icon="🛠️", layout="wide")
