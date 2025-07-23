@@ -1,3 +1,5 @@
 matplotlib
 --extra-index-url https://download.pytorch.org/whl/cu116
-torch==1.10.0
+torch
+torchvision
+torchaudio
