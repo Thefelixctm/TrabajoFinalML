@@ -69,7 +69,7 @@ python main.py --plot OnCont-L1
 
 Prueba el sistema de recuperación de memoria y el lector de QR en línea:
 
- [Abrir aplicación Streamlit](https://trabajofinalml-lztvgkzxqmlx5kzxy6kwnx.streamlit.app)
+ [Abrir aplicación Streamlit](https://sqhn-autoencoder.streamlit.app)
 
 ---
 
