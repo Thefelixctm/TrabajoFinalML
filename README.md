@@ -71,6 +71,8 @@ Prueba el sistema de recuperación de memoria y el lector de QR en línea:
 
  [Abrir aplicación Streamlit](https://sqhn-autoencoder.streamlit.app)
 
+NOTA: Para hacer una prueba rapida del lector de QR se debe ocupar la carpeta "QR(Testeo)".
+
 ---
 
 ##  Notebook en Google Colab
